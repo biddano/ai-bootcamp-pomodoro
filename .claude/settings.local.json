@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet build *)",
+      "Bash(dotnet run *)",
+      "Bash(Start-Sleep -Seconds 3)",
+      "Bash(curl -X GET http://localhost:5176/api/timerSession/home)"
+    ]
+  }
+}
