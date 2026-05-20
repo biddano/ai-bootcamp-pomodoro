@@ -9,11 +9,7 @@ dependencies: dotnet-sdk >= 10.0
 ## Core Actions
 
 ### 0. Build the solution
-
-When asked to create a new application or module:
-* Check if the dotnet-sk is installed.
-* If no dotnet-sdk. Install the latest version.
-* Then run the Project Initialization
+If there is no existing solution file, create one with the name from the user prompt based on the application name at the root of the workspace in `./backend/` using the command `dotnet new sln -n <ApplicationName>`. If a solution file already exists, ensure it is properly configured to include any new projects that will be generated in subsequent steps.
 
 ### 1. Project Initialization
 When asked to create a new application or module:

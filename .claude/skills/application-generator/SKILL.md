@@ -18,7 +18,9 @@ Once Step 1 confirms a successful exit status, transition the context to the `do
 
 Verify that the solution file is created successfully and that the folder structure adheres to our standard conventions (e.g., `/backend`, `/frontend`). If the solution file already exists, ensure it is properly configured to include new projects that will be generated in subsequent steps.
 
-Now invoke the `dotnet10-builder-skill` to create the initial backend project within the solution. Use the application name as the project name and specify the appropriate template type (e.g., `webapi`). This will scaffold a new .NET 10 WebAPI project with the necessary configurations for C# 14 features and strict nullable checks.
+Now invoke the `dotnet10-builder` to create the initial backend project within the solution. Use the application name as the project name and specify the appropriate template type (e.g., `webapi`). This will scaffold a new .NET 10 WebAPI project with the necessary configurations for C# 14 features and strict nullable checks.
+
+Now invoke the `react-frontend-builder-skill` to scaffold the React frontend application. Ensure that the frontend is configured to target the backend API endpoints that will be established in subsequent steps.
 
 ---
 
