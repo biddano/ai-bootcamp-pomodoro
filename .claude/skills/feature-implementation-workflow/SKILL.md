@@ -1,6 +1,6 @@
 ---
 name: feature-implementation-workflow
-description: Use this skill when implementing a new feature, modifying an existing feature, or making coordinated frontend/backend changes
+description: Use this skill when implementing a new feature, modifying an existing feature, or making coordinated frontend/backend changes. We are following clean architecture principles with a focus on feature-based organization and clear dependency direction. This skill will guide you through the process of making changes while adhering to our architectural guidelines and best practices.
 ---
 
 # Feature Implementation Workflow
