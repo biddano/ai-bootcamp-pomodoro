@@ -11,7 +11,7 @@ Creates a new domain object (entity/model) for the PomoTimer application.
 
 **Process:**
 1. Validates the domain object name is a valid C# identifier
-2. Creates a new .cs file in `./src/backend/Domain/` directory
+2. Creates a new .cs file in `./backend/Domain/` directory
 3. Generates a public class with readonly properties for each specified property
 3. Has a private constructor.
 4. Generate static method to create the domain object and populate the properties.

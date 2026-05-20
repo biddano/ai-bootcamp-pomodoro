@@ -11,11 +11,15 @@ You are the master orchestrator of full-stack application generation tasks. Your
 ## Phase 0: Pipeline Prerequisites & Scaffolding (Sprint 0)
 Invoke the `workspace-prereq-skill` to audit the local environment and guarantee that the .NET 10 runtime and SDK layer are active on the host machine. 
 * *Instruction:* Explicitly execute the prerequisite verification before writing or generating any files.
-Once the environment is verified, create a root solution file if it does not exist by invoking the `solution-build` with the application name given in the user prompt. This will scaffold a new solution with the appropriate folder structure for the application.
 
-Verify that the solution file is created successfully and that the folder structure adheres to our standard conventions (e.g., `src/backend`, `src/frontend`). If the solution file already exists, ensure it is properly configured to include new projects that will be generated in subsequent steps.
+Code Scaffolding and Compilation
+Once Step 1 confirms a successful exit status, transition the context to the `dotnet10-builder-skill`.
+* *Instruction:* Pass the user's specific project generation, framework template, or compilation requirements cleanly into the builder skill payload instructions.
+
+Verify that the solution file is created successfully and that the folder structure adheres to our standard conventions (e.g., `/backend`, `/frontend`). If the solution file already exists, ensure it is properly configured to include new projects that will be generated in subsequent steps.
 
 Now invoke the `dotnet10-builder-skill` to create the initial backend project within the solution. Use the application name as the project name and specify the appropriate template type (e.g., `webapi`). This will scaffold a new .NET 10 WebAPI project with the necessary configurations for C# 14 features and strict nullable checks.
+
 ---
 
 ## Phase 1: Execution Pipeline (Sub-Skill Invocation Sequence)
