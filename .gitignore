@@ -8,5 +8,8 @@
 /backend/Pomodoro.Api/bin
 
 /backend/Pomodoro.Application/obj
+/backend/Pomodoro.Application/bin
 /backend/Pomodoro.Data/obj
+/backend/Pomodoro.Data/bin
 /backend/Pomodoro.Domain/obj
+/backend/Pomodoro.Domain/bin
