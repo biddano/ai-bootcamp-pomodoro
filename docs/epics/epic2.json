@@ -1,0 +1,194 @@
+{
+    "id": "EPIC-02",
+    "title": "Timer Mode Management",
+    "summary": "Enable users to switch between focus and break modes with automatic timer adjustment and reset.",
+    "businessValue": "As a user, I want to easily toggle between focus and break modes so that I can follow the Pomodoro workflow without manual timer adjustment.",
+    "includedCapabilities": [
+        "Focus/Break mode selector",
+        "Active mode indication",
+        "Automatic timer duration change on mode switch",
+        "Timer reset when mode changes",
+        "Mode preference state management"
+    ],
+    "outOfScope": [
+        "Long break mode",
+        "Custom mode durations",
+        "Automatic mode transitions"
+    ],
+    "dependencies": [
+        "EPIC-01",
+        "EPIC-05"
+    ],
+    "suggestedPriority": "High",
+    "estimatedSize": "Medium",
+    "stories": [
+        {
+            "id": "STORY-02-01",
+            "epicId": "EPIC-02",
+            "title": "Display and style Focus/Break mode selector",
+            "businessValue": "As a user, I want to see which timer mode is active so that I can easily identify whether I'm in a focus or break session.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Mode selector displays both options",
+                    "given": "the app is open",
+                    "when": "I view the timer card",
+                    "then": "I see two mode buttons labeled \"Focus\" and \"Break\""
+                },
+                {
+                    "scenario": "Focus mode is selected by default with active styling",
+                    "given": "the app is open",
+                    "when": "I view the timer card",
+                    "then": "the Focus button is selected by default with active styling (background #0891B2, text #F8FAFC, border-radius 10px)"
+                },
+                {
+                    "scenario": "Inactive mode has correct styling",
+                    "given": "the app is open",
+                    "when": "I view the Break button",
+                    "then": "it displays inactive styling (transparent background, text #CBD5E1)"
+                },
+                {
+                    "scenario": "Mode styling updates when switching modes",
+                    "given": "I switch to Break mode",
+                    "when": "I view the Focus button",
+                    "then": "it displays inactive styling and the Break button displays active styling"
+                }
+            ],
+            "effortEstimate": "3 points",
+            "definitionOfDone": [
+                "Mode selector renders with both Focus and Break buttons",
+                "Active mode styling matches design specification exactly",
+                "Inactive mode styling matches design specification exactly",
+                "Focus mode is selected and styled active on page load",
+                "Component responds correctly to mode state changes",
+                "Unit tests verify render and styling behavior",
+                "Component has no console errors or warnings"
+            ]
+        },
+        {
+            "id": "STORY-02-02",
+            "epicId": "EPIC-02",
+            "title": "Implement mode switching logic with automatic timer reset",
+            "businessValue": "As a user, I want the timer to automatically reset when I switch between focus and break modes so that I don't have to manually adjust the timer.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Switch from Focus to Break resets timer",
+                    "given": "I am in Focus mode with timer at 10:00",
+                    "when": "I click the Break button",
+                    "then": "the mode changes to Break and the timer resets to 05:00"
+                },
+                {
+                    "scenario": "Switch from Break to Focus resets timer",
+                    "given": "I am in Break mode with timer at 02:00",
+                    "when": "I click the Focus button",
+                    "then": "the mode changes to Focus and the timer resets to 25:00"
+                },
+                {
+                    "scenario": "Running timer stops when mode switches",
+                    "given": "the timer is currently running",
+                    "when": "I click a different mode button",
+                    "then": "the timer stops and resets to the new mode's default duration"
+                },
+                {
+                    "scenario": "Switching to same mode does not cause issues",
+                    "given": "I am in Focus mode",
+                    "when": "I click the Focus button again",
+                    "then": "nothing changes and no errors occur"
+                }
+            ],
+            "effortEstimate": "3 points",
+            "definitionOfDone": [
+                "Clicking a mode button updates the mode state",
+                "Timer duration resets to correct value for new mode (25:00 for Focus, 05:00 for Break)",
+                "Running timer stops when mode is changed",
+                "Timer display updates immediately after mode switch",
+                "Mode state persists in component state",
+                "Tests verify mode switching behavior",
+                "Tests verify timer reset on mode switch",
+                "Tests verify running timer stops on mode switch",
+                "Tests verify same-mode button click is idempotent"
+            ]
+        },
+        {
+            "id": "STORY-02-03",
+            "epicId": "EPIC-02",
+            "title": "Add timer mode to session model and CreateTimerSession endpoint",
+            "businessValue": "As a developer, I want the backend to store timer mode in the session model so that the frontend can reliably create and manage sessions with the correct mode.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "TimerSession model includes mode property",
+                    "given": "a TimerSession is created",
+                    "when": "I examine the model",
+                    "then": "it includes a Mode property that can store \"focus\" or \"break\""
+                },
+                {
+                    "scenario": "CreateTimerSession endpoint accepts mode parameter",
+                    "given": "I call the CreateTimerSession endpoint with mode=\"focus\"",
+                    "when": "the endpoint completes successfully",
+                    "then": "the created session has mode set to \"focus\""
+                },
+                {
+                    "scenario": "CreateTimerSession returns mode in response",
+                    "given": "I call CreateTimerSession with mode=\"break\"",
+                    "when": "the response is returned",
+                    "then": "the response includes the created session with mode=\"break\""
+                },
+                {
+                    "scenario": "Mode persists when retrieved",
+                    "given": "I create a session with mode=\"focus\" and retrieve it with GetTimerSession",
+                    "when": "I view the session",
+                    "then": "the mode property is correctly persisted and returned as \"focus\""
+                }
+            ],
+            "effortEstimate": "3 points",
+            "definitionOfDone": [
+                "TimerSession model includes Mode property (enum or string: \"focus\"/\"break\")",
+                "CreateTimerSession endpoint accepts mode parameter",
+                "Mode parameter is validated (only accepts \"focus\" or \"break\")",
+                "Mode is stored in database when session is created",
+                "CreateTimerSession response includes mode in session data",
+                "GetTimerSession endpoint returns mode for existing sessions",
+                "Unit tests verify mode storage",
+                "Unit tests verify mode retrieval",
+                "Integration tests verify database persistence",
+                "API documentation includes mode field in request/response"
+            ]
+        },
+        {
+            "id": "STORY-02-04",
+            "epicId": "EPIC-02",
+            "title": "Implement mode updates in UpdateTimerSession endpoint",
+            "businessValue": "As a developer, I want the frontend to be able to update a session's mode through the API so that mode changes are persisted to the backend.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "UpdateTimerSession changes mode from focus to break",
+                    "given": "I have a timer session with mode=\"focus\"",
+                    "when": "I call UpdateTimerSession with mode=\"break\"",
+                    "then": "the session mode is updated to \"break\""
+                },
+                {
+                    "scenario": "Updated mode persists across retrievals",
+                    "given": "I update a session to mode=\"break\"",
+                    "when": "I retrieve the session with GetTimerSession",
+                    "then": "the session shows mode=\"break\""
+                },
+                {
+                    "scenario": "UpdateTimerSession response includes updated mode",
+                    "given": "I call UpdateTimerSession with a new mode",
+                    "when": "the response is returned",
+                    "then": "it includes the updated session with the new mode value"
+                }
+            ],
+            "effortEstimate": "2 points",
+            "definitionOfDone": [
+                "UpdateTimerSession endpoint accepts mode parameter",
+                "Mode parameter is validated (only accepts \"focus\" or \"break\")",
+                "Mode is updated in database for the specified session",
+                "UpdateTimerSession response includes updated mode",
+                "Updated mode persists across subsequent GetTimerSession calls",
+                "Unit tests verify mode update",
+                "Integration tests verify database persistence of mode changes",
+                "Tests verify mode validation prevents invalid values"
+            ]
+        }
+    ]
+}

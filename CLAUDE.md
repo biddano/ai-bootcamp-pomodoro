@@ -87,6 +87,10 @@ Use the `/feature-implementation-workflow` skill when:
 
 This skill guides you through understanding scope, identifying affected systems (frontend only, backend only, or both), and checking for applicable coding standards before implementation.
 
+## Implementation Planning
+
+Use the `/create-implementation-plan` skill to generate implementation plans for user stories. Provide the epic number and story number (e.g., "epic 5 story 1"). The skill will create a detailed plan including task breakdown, testing strategy, and definition of done checklist in `docs/plans/epic#-story#.md`.
+
 ## Important Notes
 
 - The `WeatherForecastController.cs` and `WeatherForecast.cs` are scaffolding and should be removed.

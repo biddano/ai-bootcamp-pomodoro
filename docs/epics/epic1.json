@@ -1,0 +1,282 @@
+{
+    "id": "EPIC-01",
+    "title": "Timer Implementation",
+    "summary": "Implement 25-minute focus timer and 5-minute break timer with countdown display and core control actions.",
+    "businessValue": "As a user, I want to run timed focus sessions and breaks so that I can apply the Pomodoro technique to manage my productivity.",
+    "includedCapabilities": [
+        "25-minute focus timer with countdown display",
+        "5-minute break timer with countdown display",
+        "Timer start control",
+        "Timer pause control",
+        "Timer reset control",
+        "Timer display in MM:SS format"
+    ],
+    "outOfScope": [
+        "Custom timer durations",
+        "Automatic cycle transitions",
+        "Timer notifications or alerts"
+    ],
+    "dependencies": [
+        "EPIC-05"
+    ],
+    "suggestedPriority": "High",
+    "estimatedSize": "Large",
+    "stories": [
+        {
+            "id": "STORY-01-01",
+            "title": "Display Focus Timer at 25:00",
+            "epicId": "EPIC-01",
+            "userStory": "As a user, I want to see a 25-minute timer display when the app loads in focus mode so that I know how much time I have for my focus session.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "App displays default focus timer",
+                    "given": "a user opens the app",
+                    "when": "the app initializes in focus mode",
+                    "then": "the timer display shows '25:00' in MM:SS format"
+                },
+                {
+                    "scenario": "Timer display is prominent",
+                    "given": "the app is loaded in focus mode",
+                    "when": "the user views the main screen",
+                    "then": "the timer is displayed at 112px font size with 700 font weight"
+                },
+                {
+                    "scenario": "Timer display remains visible",
+                    "given": "the user is in focus mode",
+                    "when": "the timer is not running",
+                    "then": "the display continues to show '25:00'"
+                }
+            ],
+            "storyPoints": 3,
+            "effortEstimate": "Small",
+            "definitionOfDone": [
+                "Focus timer displays '25:00' on app load",
+                "Timer display uses correct font size (112px) and weight (700)",
+                "Timer display persists when timer is paused or idle",
+                "Component is tested with unit tests",
+                "Design matches UX spec color (#F8FAFC text on #1E293B background)"
+            ],
+            "dependencies": []
+        },
+        {
+            "id": "STORY-01-02",
+            "title": "Display Break Timer at 05:00",
+            "epicId": "EPIC-01",
+            "userStory": "As a user, I want to see a 5-minute timer display when I switch to break mode so that I know how much break time I have.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "App displays default break timer",
+                    "given": "a user switches to break mode",
+                    "when": "break mode is selected",
+                    "then": "the timer display shows '05:00' in MM:SS format"
+                },
+                {
+                    "scenario": "Timer display updates on mode switch",
+                    "given": "the timer is displaying '25:00' in focus mode",
+                    "when": "the user switches to break mode",
+                    "then": "the timer immediately displays '05:00'"
+                },
+                {
+                    "scenario": "Break timer display is prominent",
+                    "given": "the app is in break mode",
+                    "when": "the user views the timer",
+                    "then": "the display uses the same font size (112px) and weight (700) as focus timer"
+                }
+            ],
+            "storyPoints": 3,
+            "effortEstimate": "Small",
+            "definitionOfDone": [
+                "Break timer displays '05:00' when break mode is active",
+                "Timer updates immediately when mode changes to break",
+                "Timer display uses correct font size (112px) and weight (700)",
+                "Component is tested with unit tests",
+                "Design matches UX spec color (#F8FAFC text on #1E293B background)"
+            ],
+            "dependencies": []
+        },
+        {
+            "id": "STORY-01-03",
+            "title": "Start Timer Countdown",
+            "epicId": "EPIC-01",
+            "userStory": "As a user, I want to click a START button to begin the timer countdown so that I can begin my focus or break session.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Timer starts when START button is clicked",
+                    "given": "the timer is at '25:00' and not running",
+                    "when": "the user clicks the START button",
+                    "then": "the timer begins counting down toward 00:00"
+                },
+                {
+                    "scenario": "Timer counts down in one-second intervals",
+                    "given": "the timer is running from '25:00'",
+                    "when": "one second passes",
+                    "then": "the timer display updates to '24:59'"
+                },
+                {
+                    "scenario": "Timer displays accurate remaining time",
+                    "given": "the timer has been running for 10 seconds from '25:00'",
+                    "when": "the user observes the timer",
+                    "then": "the timer displays '24:50' in MM:SS format"
+                },
+                {
+                    "scenario": "START button changes to PAUSE when running",
+                    "given": "the user clicks START and the timer is running",
+                    "when": "the user views the button",
+                    "then": "the button label changes to 'PAUSE'"
+                }
+            ],
+            "storyPoints": 5,
+            "effortEstimate": "Medium",
+            "definitionOfDone": [
+                "START button triggers timer countdown mechanism",
+                "Timer counts down at 1-second intervals",
+                "Button label changes from START to PAUSE when timer is running",
+                "Timer display updates in real-time as it counts down",
+                "Unit tests verify countdown logic and interval timing",
+                "Integration tests verify button click triggers countdown",
+                "Timer state is managed in component or service layer"
+            ],
+            "dependencies": [
+                "STORY-01-01",
+                "STORY-01-02"
+            ]
+        },
+        {
+            "id": "STORY-01-04",
+            "title": "Pause Running Timer",
+            "epicId": "EPIC-01",
+            "userStory": "As a user, I want to click a PAUSE button to stop the timer countdown so that I can temporarily suspend my focus or break session.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Timer stops when PAUSE is clicked",
+                    "given": "the timer is running at '23:45'",
+                    "when": "the user clicks the PAUSE button",
+                    "then": "the timer stops counting down and remains at '23:45'"
+                },
+                {
+                    "scenario": "PAUSE button returns to START",
+                    "given": "the timer is paused",
+                    "when": "the user views the button",
+                    "then": "the button label changes back to 'START'"
+                },
+                {
+                    "scenario": "Paused timer can be resumed",
+                    "given": "the timer is paused at '23:45'",
+                    "when": "the user clicks the START button",
+                    "then": "the timer resumes counting down from '23:45'"
+                },
+                {
+                    "scenario": "Timer time is preserved on pause",
+                    "given": "the timer is running",
+                    "when": "the user pauses the timer",
+                    "then": "the remaining time is preserved exactly as it was at pause time"
+                }
+            ],
+            "storyPoints": 3,
+            "effortEstimate": "Small",
+            "definitionOfDone": [
+                "PAUSE button stops the timer countdown",
+                "Timer display preserves remaining time when paused",
+                "Button label changes from PAUSE to START when timer is paused",
+                "Paused timer can be resumed from where it was paused",
+                "Unit tests verify pause logic and time preservation",
+                "Integration tests verify button click pauses countdown"
+            ],
+            "dependencies": [
+                "STORY-01-03"
+            ]
+        },
+        {
+            "id": "STORY-01-05",
+            "title": "Reset Timer to Default Duration",
+            "epicId": "EPIC-01",
+            "userStory": "As a user, I want to click a RESET button to return the timer to its default duration so that I can quickly restart a session without waiting.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Reset returns focus timer to 25:00",
+                    "given": "the timer is running or paused at any value in focus mode",
+                    "when": "the user clicks the RESET button",
+                    "then": "the timer returns to '25:00' and stops counting down"
+                },
+                {
+                    "scenario": "Reset returns break timer to 05:00",
+                    "given": "the timer is running or paused at any value in break mode",
+                    "when": "the user clicks the RESET button",
+                    "then": "the timer returns to '05:00' and stops counting down"
+                },
+                {
+                    "scenario": "Reset stops a running timer",
+                    "given": "the timer is actively running",
+                    "when": "the user clicks the RESET button",
+                    "then": "the timer stops counting and displays the default duration"
+                },
+                {
+                    "scenario": "Reset button is visually distinct",
+                    "given": "the user views the RESET button",
+                    "when": "the timer is displayed",
+                    "then": "the RESET button is secondary in styling with transparent background and border"
+                }
+            ],
+            "storyPoints": 3,
+            "effortEstimate": "Small",
+            "definitionOfDone": [
+                "RESET button stops the running timer",
+                "RESET restores focus timer to '25:00'",
+                "RESET restores break timer to '05:00'",
+                "RESET respects current timer mode when resetting",
+                "Button styling matches UX spec (transparent background, #475569 border)",
+                "Unit tests verify reset logic for both modes",
+                "Integration tests verify button click resets timer"
+            ],
+            "dependencies": [
+                "STORY-01-03",
+                "STORY-01-04"
+            ]
+        },
+        {
+            "id": "STORY-01-06",
+            "title": "Display Timer in MM:SS Format",
+            "epicId": "EPIC-01",
+            "userStory": "As a user, I want the timer to always display in MM:SS format so that I can quickly read the remaining time.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Timer displays with leading zero in minutes",
+                    "given": "the timer has less than 10 minutes remaining",
+                    "when": "the user views the timer",
+                    "then": "the timer displays with leading zero (e.g., '05:30', '09:15')"
+                },
+                {
+                    "scenario": "Timer displays with leading zero in seconds",
+                    "given": "the timer has less than 10 seconds remaining in a minute",
+                    "when": "the user views the timer",
+                    "then": "the timer displays with leading zero (e.g., '15:05', '24:03')"
+                },
+                {
+                    "scenario": "Default durations use correct format",
+                    "given": "the app is in focus mode",
+                    "when": "no timer is running",
+                    "then": "the timer displays '25:00' not '25:0' or '250'"
+                },
+                {
+                    "scenario": "Countdown maintains format throughout",
+                    "given": "the timer is counting down from '25:00'",
+                    "when": "the timer reaches various time points",
+                    "then": "format remains consistent (e.g., '00:03', '00:01', never '0:3' or ':3')"
+                }
+            ],
+            "storyPoints": 2,
+            "effortEstimate": "Small",
+            "definitionOfDone": [
+                "Timer always displays as MM:SS with leading zeros",
+                "Formatting is applied to all timer displays (focus, break, countdown)",
+                "Edge cases tested (single digit minutes/seconds)",
+                "Format validation in unit tests",
+                "No formatting regressions in countdown display"
+            ],
+            "dependencies": [
+                "STORY-01-01",
+                "STORY-01-02"
+            ]
+        }
+    ]
+}

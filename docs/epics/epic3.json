@@ -1,0 +1,240 @@
+{
+    "id": "EPIC-03",
+    "title": "Task Association and Display",
+    "summary": "Allow users to enter, manage, and display a single key task for their timer session.",
+    "businessValue": "As a user, I want to record my primary focus for each session so that I stay committed to my main objective during each Pomodoro.",
+    "includedCapabilities": [
+        "Task input field",
+        "Task storage per session",
+        "Task display during active session",
+        "Task editing before timer starts",
+        "Task clearing functionality",
+        "Task validation and persistence"
+    ],
+    "outOfScope": [
+        "Multiple tasks per session",
+        "Task history or lists",
+        "Task completion marking",
+        "Task templates or recurrence"
+    ],
+    "dependencies": [
+        "EPIC-05"
+    ],
+    "suggestedPriority": "High",
+    "estimatedSize": "Medium",
+    "stories": [
+        {
+            "id": "STORY-03-01",
+            "title": "Task Input Field UI Implementation",
+            "businessValue": "As a user, I want a clear task input field so that I can enter my key focus for the session.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Display task input field on app launch",
+                    "given": "the user has opened the Pomodoro app",
+                    "when": "the page loads",
+                    "then": "the task input field is visible with placeholder text 'What are you focusing on?'"
+                },
+                {
+                    "scenario": "Input field styling matches design spec",
+                    "given": "the task input field is rendered",
+                    "when": "the user views the app",
+                    "then": "the input has dark theme styling with cyan focus border per UX spec"
+                },
+                {
+                    "scenario": "User can type in task field",
+                    "given": "the task input field is visible",
+                    "when": "the user clicks and types in the field",
+                    "then": "the text is captured and displayed in the input field"
+                }
+            ],
+            "storyPoints": 5,
+            "definitionOfDone": [
+                "Task input field renders with correct styling per UX spec",
+                "Placeholder text displays correctly",
+                "Input accepts and displays user text",
+                "Focus state styling applies correctly with cyan border",
+                "Component is responsive and centered properly",
+                "No accessibility issues detected",
+                "Code reviewed and approved",
+                "No console errors"
+            ],
+            "epicId": "EPIC-03"
+        },
+        {
+            "id": "STORY-03-02",
+            "title": "Task Storage and Persistence Backend",
+            "businessValue": "As a developer, I want to store tasks per timer session so that user input is retained during the session.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Create timer session with task",
+                    "given": "the user enters a task and starts a timer",
+                    "when": "the CreateTimerSession endpoint is called with task data",
+                    "then": "the task is stored in the session and persisted to data store"
+                },
+                {
+                    "scenario": "Retrieve session task",
+                    "given": "a timer session exists with a task",
+                    "when": "the GetTimerSession endpoint is called",
+                    "then": "the response includes the task associated with that session"
+                },
+                {
+                    "scenario": "Task validation enforced",
+                    "given": "a task input is provided to create or update a session",
+                    "when": "the request is validated",
+                    "then": "the task passes validation and is non-empty with reasonable length limits"
+                },
+                {
+                    "scenario": "Update session task",
+                    "given": "a timer session exists with a task",
+                    "when": "the UpdateTimerSession endpoint is called with new task data",
+                    "then": "the task is updated in the session and persisted"
+                }
+            ],
+            "storyPoints": 8,
+            "definitionOfDone": [
+                "TimerSession data model includes Task property",
+                "CreateTimerSession endpoint accepts and stores task data",
+                "GetTimerSession endpoint returns task data in response",
+                "UpdateTimerSession endpoint updates task data",
+                "Task validation logic is implemented and testable",
+                "Data is persisted to database or storage layer",
+                "API responses follow consistent format",
+                "Unit tests cover task storage scenarios",
+                "Integration tests cover end-to-end persistence",
+                "Code reviewed and approved"
+            ],
+            "epicId": "EPIC-03"
+        },
+        {
+            "id": "STORY-03-03",
+            "title": "Task Display During Active Session",
+            "businessValue": "As a user, I want to see my task while the timer is running so that I stay focused on my primary objective.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Display task during active timer",
+                    "given": "the user has entered a task and started the timer",
+                    "when": "the timer is running",
+                    "then": "the task is displayed in the key task section below the timer"
+                },
+                {
+                    "scenario": "Task visibility on mode switch",
+                    "given": "the user is in focus mode with a task displayed",
+                    "when": "the user switches to break mode",
+                    "then": "switching back to focus mode restores the task display"
+                },
+                {
+                    "scenario": "Task display on pause",
+                    "given": "the timer is running with a task displayed",
+                    "when": "the user pauses the timer",
+                    "then": "the task remains visible"
+                },
+                {
+                    "scenario": "Task displays on reset",
+                    "given": "the timer has been reset with a task in the session",
+                    "when": "the user views the task section",
+                    "then": "the task is still visible"
+                }
+            ],
+            "storyPoints": 5,
+            "definitionOfDone": [
+                "Task displays in key task section when timer is active",
+                "Task remains visible when paused or reset",
+                "Task persists across mode switches",
+                "Task styling matches design spec (20px, centered)",
+                "Task text is readable with proper contrast",
+                "Task section layout is responsive",
+                "Component renders without errors",
+                "Tested in focus and break modes",
+                "Code reviewed and approved"
+            ],
+            "epicId": "EPIC-03"
+        },
+        {
+            "id": "STORY-03-04",
+            "title": "Task Editing Before Timer Starts",
+            "businessValue": "As a user, I want to edit my task before starting the timer so that I can correct or refine my focus objective.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Edit task when timer is stopped",
+                    "given": "the timer is in stopped state",
+                    "when": "the user modifies the text in the task input field",
+                    "then": "the input accepts the new text without restriction"
+                },
+                {
+                    "scenario": "Task input disabled during timer run",
+                    "given": "the timer is running",
+                    "when": "the timer is active",
+                    "then": "the task input field is disabled to prevent accidental changes"
+                },
+                {
+                    "scenario": "Task input re-enabled after pause",
+                    "given": "the user has paused the timer",
+                    "when": "the user views the task input",
+                    "then": "the input is enabled and can be edited"
+                },
+                {
+                    "scenario": "Task changes are sent to backend",
+                    "given": "the user edits the task while timer is stopped",
+                    "when": "the edit is confirmed",
+                    "then": "the UpdateTimerSession endpoint is called with the new task"
+                }
+            ],
+            "storyPoints": 5,
+            "definitionOfDone": [
+                "Task input is enabled when timer is stopped",
+                "Task input is disabled when timer is running",
+                "Task input is re-enabled when timer is paused",
+                "Disabled state styling is visually distinct",
+                "Changes are captured and sent to backend",
+                "User cannot accidentally modify task during active focus",
+                "Tested with start, pause, and reset scenarios",
+                "Code reviewed and approved"
+            ],
+            "epicId": "EPIC-03"
+        },
+        {
+            "id": "STORY-03-05",
+            "title": "Task Clearing Functionality",
+            "businessValue": "As a user, I want to clear my task so that I can start a new session with a fresh focus objective.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Clear button visible when timer stopped",
+                    "given": "the timer is not running",
+                    "when": "the user views the key task section",
+                    "then": "a clear button is visible near the task input with red styling"
+                },
+                {
+                    "scenario": "Clear button hidden when timer running",
+                    "given": "the timer is running",
+                    "when": "the user views the key task section",
+                    "then": "the clear button is hidden or disabled"
+                },
+                {
+                    "scenario": "Clear task removes input text",
+                    "given": "a task is entered in the input field",
+                    "when": "the user clicks the clear button",
+                    "then": "the task input is cleared and becomes empty"
+                },
+                {
+                    "scenario": "Task cleared in backend",
+                    "given": "a timer session has a task",
+                    "when": "the clear action is triggered",
+                    "then": "the UpdateTimerSession endpoint is called to clear the task"
+                }
+            ],
+            "storyPoints": 5,
+            "definitionOfDone": [
+                "Clear button renders when timer is stopped",
+                "Clear button is hidden or disabled when timer is running",
+                "Clear button removes text from input field",
+                "Backend endpoint clears task from session",
+                "Button uses error color (#F87171) per design spec",
+                "Button shows proper hover state",
+                "Clear action sends update to backend",
+                "Tested in various timer states",
+                "Code reviewed and approved"
+            ],
+            "epicId": "EPIC-03"
+        }
+    ]
+}
