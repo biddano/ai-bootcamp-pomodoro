@@ -1,0 +1,463 @@
+{
+    "id": "EPIC-05",
+    "title": "Backend API and Service Layer",
+    "summary": "Implement .NET Web API with timer session management endpoints and business logic service layer.",
+    "businessValue": "As a developer, I want a well-organized backend API so that the frontend can manage timer sessions reliably and persist user data.",
+    "includedCapabilities": [
+        "CreateTimerSession endpoint",
+        "GetTimerSession endpoint",
+        "UpdateTimerSession endpoint",
+        "CompleteTimerSession endpoint",
+        "TimerSession data model",
+        "Task data model per session",
+        "TimerSessionService with business logic",
+        "Mode-specific duration handling",
+        "Session and task data persistence",
+        "Consistent API response format",
+        "Vertical slice architecture implementation"
+    ],
+    "outOfScope": [
+        "User authentication or authorization",
+        "Multi-user support",
+        "Session analytics or reporting",
+        "Advanced business rules beyond V1 scope",
+        "Background jobs or queuing"
+    ],
+    "dependencies": [],
+    "suggestedPriority": "High",
+    "estimatedSize": "Large",
+    "stories": [
+        {
+            "id": "STORY-05-01",
+            "title": "Create Timer Session with Mode and Task",
+            "userValue": "As an API consumer, I want to create a new timer session with a mode and task so that the frontend can initiate a Pomodoro session",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Create focus session with task",
+                    "given": "a CreateTimerSession request with mode=Focus and task='Complete report'",
+                    "when": "the CreateTimerSession endpoint is called",
+                    "then": "a TimerSession is created with id, mode=Focus, duration=1500 seconds, task='Complete report', and createdAt timestamp; HTTP 201 is returned"
+                },
+                {
+                    "scenario": "Create break session without task",
+                    "given": "a CreateTimerSession request with mode=Break and empty task",
+                    "when": "the CreateTimerSession endpoint is called",
+                    "then": "a TimerSession is created with duration=300 seconds and task is empty string"
+                },
+                {
+                    "scenario": "Session is immediately queryable",
+                    "given": "a session has been created",
+                    "when": "GetTimerSession is called with the new session id",
+                    "then": "the complete session object is returned"
+                }
+            ],
+            "storyPoints": 5,
+            "definitionOfDone": [
+                "CreateTimerSession endpoint implemented in controller",
+                "CreateTimerSessionHandler created with business logic",
+                "CreateTimerSessionRequest and CreateTimerSessionResponse DTOs defined",
+                "TimerSession entity persisted to database",
+                "HTTP 201 response with session object returned",
+                "Unit tests for handler validation logic",
+                "Integration test for endpoint-to-database flow"
+            ],
+            "epicId": "EPIC-05"
+        },
+        {
+            "id": "STORY-05-02",
+            "title": "Retrieve Timer Session by ID",
+            "userValue": "As an API consumer, I want to retrieve a timer session by ID so that the frontend can fetch the current session state",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Retrieve existing session",
+                    "given": "a timer session with id=session-123 exists in the database",
+                    "when": "GetTimerSession endpoint is called with id=session-123",
+                    "then": "HTTP 200 is returned with the session object including mode, remainingTime, task, and state"
+                },
+                {
+                    "scenario": "Retrieve non-existent session",
+                    "given": "no timer session exists with id=not-found-999",
+                    "when": "GetTimerSession endpoint is called with id=not-found-999",
+                    "then": "HTTP 404 is returned with error message"
+                }
+            ],
+            "storyPoints": 3,
+            "definitionOfDone": [
+                "GetTimerSession endpoint implemented",
+                "GetTimerSessionHandler retrieves from database by ID",
+                "Returns complete session object with all fields",
+                "Proper HTTP status codes (200, 404)",
+                "Unit tests for success and not-found cases",
+                "Integration test for database retrieval"
+            ],
+            "epicId": "EPIC-05"
+        },
+        {
+            "id": "STORY-05-03",
+            "title": "Pause and Resume Timer Session",
+            "userValue": "As an API consumer, I want to pause and resume a timer session so that the frontend can control the timer workflow",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Pause a running timer",
+                    "given": "a timer session with state=Running and remainingTime=1200",
+                    "when": "UpdateTimerSession is called with action=Pause",
+                    "then": "the session state becomes Paused and remainingTime=1200 is preserved"
+                },
+                {
+                    "scenario": "Resume a paused timer",
+                    "given": "a timer session with state=Paused and remainingTime=1200",
+                    "when": "UpdateTimerSession is called with action=Resume",
+                    "then": "the session state becomes Running"
+                },
+                {
+                    "scenario": "Cannot pause already paused session",
+                    "given": "a timer session with state=Paused",
+                    "when": "UpdateTimerSession is called with action=Pause",
+                    "then": "HTTP 400 is returned with validation error"
+                }
+            ],
+            "storyPoints": 3,
+            "definitionOfDone": [
+                "UpdateTimerSession endpoint handles Pause and Resume actions",
+                "UpdateTimerSessionHandler validates state transitions",
+                "State change persisted to database",
+                "remainingTime preserved during pause",
+                "HTTP 200 response with updated session",
+                "Unit tests for state transition validation",
+                "Integration tests for pause/resume workflow"
+            ],
+            "epicId": "EPIC-05"
+        },
+        {
+            "id": "STORY-05-04",
+            "title": "Reset Timer to Mode Default Duration",
+            "userValue": "As an API consumer, I want to reset a timer session to its mode's default duration so that the user can restart the timer",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Reset focus timer to 25 minutes",
+                    "given": "a timer session with mode=Focus and remainingTime=1000",
+                    "when": "UpdateTimerSession is called with action=Reset",
+                    "then": "remainingTime is reset to 1500 (25 minutes) and state becomes NotStarted"
+                },
+                {
+                    "scenario": "Reset break timer to 5 minutes",
+                    "given": "a timer session with mode=Break and remainingTime=100",
+                    "when": "UpdateTimerSession is called with action=Reset",
+                    "then": "remainingTime is reset to 300 (5 minutes) and state becomes NotStarted"
+                }
+            ],
+            "storyPoints": 2,
+            "definitionOfDone": [
+                "UpdateTimerSession endpoint handles Reset action",
+                "Business logic applies mode-specific default durations",
+                "remainingTime reset and state set to NotStarted",
+                "Changes persisted to database",
+                "HTTP 200 response with updated session",
+                "Unit tests for reset logic",
+                "Integration test for reset workflow"
+            ],
+            "epicId": "EPIC-05"
+        },
+        {
+            "id": "STORY-05-05",
+            "title": "Switch Timer Mode with Automatic Reset",
+            "userValue": "As an API consumer, I want to switch timer modes with automatic duration adjustment so that the user can follow the Pomodoro workflow",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Switch from Focus to Break mode",
+                    "given": "a timer session with mode=Focus, state=Running, and remainingTime=800",
+                    "when": "UpdateTimerSession is called with mode=Break",
+                    "then": "mode becomes Break, remainingTime resets to 300, state becomes NotStarted, and HTTP 200 is returned"
+                },
+                {
+                    "scenario": "Switch from Break to Focus mode",
+                    "given": "a timer session with mode=Break and remainingTime=150",
+                    "when": "UpdateTimerSession is called with mode=Focus",
+                    "then": "mode becomes Focus and remainingTime resets to 1500"
+                }
+            ],
+            "storyPoints": 3,
+            "definitionOfDone": [
+                "UpdateTimerSession endpoint handles mode switching",
+                "Business logic applies correct duration based on target mode",
+                "State resets to NotStarted on mode change",
+                "previousMode state optionally tracked for UI purposes",
+                "HTTP 200 response with updated session",
+                "Unit tests for mode switch logic",
+                "Integration test for mode switching workflow"
+            ],
+            "epicId": "EPIC-05"
+        },
+        {
+            "id": "STORY-05-06",
+            "title": "Update Task Before Timer Starts",
+            "userValue": "As an API consumer, I want to update the task before the timer starts so that the user can change their focus objective",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Update task on non-running session",
+                    "given": "a timer session with state=NotStarted and task='Old task'",
+                    "when": "UpdateTimerSession is called with task='New task'",
+                    "then": "the session task is updated to 'New task' and HTTP 200 is returned"
+                },
+                {
+                    "scenario": "Cannot update task on running session",
+                    "given": "a timer session with state=Running and task='Current task'",
+                    "when": "UpdateTimerSession is called with task='Different task'",
+                    "then": "HTTP 400 is returned with error message 'Cannot update task while timer is running'"
+                },
+                {
+                    "scenario": "Clear task on non-running session",
+                    "given": "a timer session with state=Paused and task='Some task'",
+                    "when": "UpdateTimerSession is called with task=''",
+                    "then": "the session task is cleared and HTTP 200 is returned"
+                }
+            ],
+            "storyPoints": 2,
+            "definitionOfDone": [
+                "UpdateTimerSession endpoint handles task update",
+                "Business logic validates session state before allowing task update",
+                "Task update rejected if session is Running",
+                "Empty string accepted to clear task",
+                "Task field max length 200 characters validated",
+                "HTTP 200 on success, 400 on validation failure",
+                "Unit tests for task update validation",
+                "Integration test for task update workflow"
+            ],
+            "epicId": "EPIC-05"
+        },
+        {
+            "id": "STORY-05-07",
+            "title": "Complete Timer Session",
+            "userValue": "As an API consumer, I want to mark a timer session as complete so that the backend can track session lifecycle",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Complete a running session",
+                    "given": "a timer session with state=Running and remainingTime=600",
+                    "when": "CompleteTimerSession endpoint is called",
+                    "then": "the session state becomes Completed and completedAt timestamp is set to current time"
+                },
+                {
+                    "scenario": "Complete a paused session",
+                    "given": "a timer session with state=Paused",
+                    "when": "CompleteTimerSession endpoint is called",
+                    "then": "the session state becomes Completed regardless of remaining time"
+                },
+                {
+                    "scenario": "Complete session returns updated object",
+                    "given": "a timer session",
+                    "when": "CompleteTimerSession endpoint is called",
+                    "then": "HTTP 200 is returned with the completed session object including completedAt"
+                }
+            ],
+            "storyPoints": 2,
+            "definitionOfDone": [
+                "CompleteTimerSession endpoint implemented",
+                "CompleteTimerSessionHandler updates session state to Completed",
+                "completedAt timestamp recorded as current UTC time",
+                "Session changes persisted to database",
+                "HTTP 200 response with completed session",
+                "Unit tests for completion logic",
+                "Integration test for completion workflow"
+            ],
+            "epicId": "EPIC-05"
+        },
+        {
+            "id": "STORY-05-08",
+            "title": "Define TimerSession and Task Data Models",
+            "userValue": "As a developer, I want well-defined TimerSession and Task entities so that the backend can consistently store and retrieve data",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "TimerSession entity has required properties",
+                    "given": "the TimerSession entity is reviewed",
+                    "when": "property list is checked",
+                    "then": "it contains: id (Guid), mode (enum: Focus/Break), state (enum: NotStarted/Running/Paused/Completed), remainingTime (int seconds), task (string), createdAt (DateTime), completedAt (DateTime?), lastUpdatedAt (DateTime)"
+                },
+                {
+                    "scenario": "Task constraints are enforced",
+                    "given": "the TimerSession task property is reviewed",
+                    "when": "validation rules are checked",
+                    "then": "it is nullable string with max length 200 characters"
+                },
+                {
+                    "scenario": "Mode enumeration is defined",
+                    "given": "the Mode enum is reviewed",
+                    "when": "values are checked",
+                    "then": "it supports exactly two values: Focus=0, Break=1"
+                },
+                {
+                    "scenario": "State enumeration is defined",
+                    "given": "the State enum is reviewed",
+                    "when": "values are checked",
+                    "then": "it supports exactly four values: NotStarted=0, Running=1, Paused=2, Completed=3"
+                }
+            ],
+            "storyPoints": 3,
+            "definitionOfDone": [
+                "TimerSession.cs entity class created with all properties",
+                "Mode enum defined with Focus and Break",
+                "State enum defined with NotStarted, Running, Paused, Completed",
+                "Data annotations or fluent configuration for database constraints",
+                "Timestamps use DateTime (UTC)",
+                "remainingTime stored as integer (seconds)",
+                "Task property nullable with max length 200",
+                "Unit tests covering entity structure and validation"
+            ],
+            "epicId": "EPIC-05"
+        },
+        {
+            "id": "STORY-05-09",
+            "title": "Implement TimerSessionService Business Logic",
+            "userValue": "As a developer, I want a service layer with business logic so that controllers remain thin and logic is testable",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Service applies mode-specific durations",
+                    "given": "TimerSessionService is called to create a session",
+                    "when": "mode=Focus is specified",
+                    "then": "the service sets remainingTime to 1500 (25 minutes); when mode=Break is specified, it sets remainingTime to 300 (5 minutes)"
+                },
+                {
+                    "scenario": "Service validates state transitions",
+                    "given": "a timer session with state=NotStarted",
+                    "when": "the service is called to pause",
+                    "then": "it throws validation error because pause is not allowed from NotStarted"
+                },
+                {
+                    "scenario": "Service enforces task edit restrictions",
+                    "given": "a timer session with state=Running",
+                    "when": "the service is called to update task",
+                    "then": "it rejects the update with error message 'Cannot update task while timer is running'"
+                }
+            ],
+            "storyPoints": 5,
+            "definitionOfDone": [
+                "TimerSessionService class created",
+                "Methods: CreateSession, GetSession, UpdateSession, CompleteSession",
+                "Business logic for mode-to-duration mapping (Focus=1500, Break=300)",
+                "State transition validation (only allow valid transitions)",
+                "Task update restrictions enforced based on state",
+                "Service injected into controllers",
+                "Custom exceptions defined for business rule violations",
+                "Unit tests covering all business logic paths",
+                "Integration tests with repository/database"
+            ],
+            "epicId": "EPIC-05"
+        },
+        {
+            "id": "STORY-05-10",
+            "title": "Implement Consistent API Response Format",
+            "userValue": "As an API consumer, I want all endpoints to return a consistent response format so that the frontend can reliably parse responses",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Success response structure",
+                    "given": "any successful API call",
+                    "when": "the response is returned",
+                    "then": "it contains: {success: true, data: {...}, statusCode: 200 (or appropriate success code)}"
+                },
+                {
+                    "scenario": "Error response structure",
+                    "given": "any failed API call (validation error, not found, etc.)",
+                    "when": "the response is returned",
+                    "then": "it contains: {success: false, error: {message, code, details}, statusCode: 400/404/500}"
+                },
+                {
+                    "scenario": "Timestamp format consistency",
+                    "given": "any response containing timestamps (createdAt, completedAt)",
+                    "when": "returned",
+                    "then": "all timestamps are in ISO 8601 format (e.g., 2026-05-20T14:30:00Z)"
+                }
+            ],
+            "storyPoints": 3,
+            "definitionOfDone": [
+                "ApiResponse<T> generic wrapper class created",
+                "ApiError class defined with message, code, and details",
+                "Global exception handler implemented to catch and format errors",
+                "All controllers wrap responses in ApiResponse",
+                "All timestamps serialized as ISO 8601 UTC",
+                "HTTP status codes set correctly for success and error scenarios",
+                "Unit tests for response formatting",
+                "Integration tests verifying end-to-end response format"
+            ],
+            "epicId": "EPIC-05"
+        },
+        {
+            "id": "STORY-05-11",
+            "title": "Setup Vertical Slice Architecture",
+            "userValue": "As a developer, I want the backend organized using vertical slice architecture so that features are cohesive and maintainable",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "TimerSessions feature structure exists",
+                    "given": "the project structure is reviewed",
+                    "when": "Features/TimerSessions directory is examined",
+                    "then": "it contains subdirectories: CreateTimerSession/, GetTimerSession/, UpdateTimerSession/, CompleteTimerSession/"
+                },
+                {
+                    "scenario": "Each slice contains handler and models",
+                    "given": "the CreateTimerSession slice is reviewed",
+                    "when": "files are listed",
+                    "then": "it contains: CreateTimerSessionHandler.cs, CreateTimerSessionRequest.cs, CreateTimerSessionResponse.cs"
+                },
+                {
+                    "scenario": "Controllers delegate to services/handlers",
+                    "given": "the TimerSessionsController is reviewed",
+                    "when": "code is inspected",
+                    "then": "it contains thin endpoints that delegate to appropriate service/handler classes"
+                },
+                {
+                    "scenario": "Shared services are in Services folder",
+                    "given": "the project structure is reviewed",
+                    "when": "Services folder is examined",
+                    "then": "it contains TimerSessionService and other cross-cutting service logic"
+                }
+            ],
+            "storyPoints": 3,
+            "definitionOfDone": [
+                "Project structure created: Controllers/, Features/, Services/, Models/, Data/",
+                "Features/TimerSessions/ subfolder with slice subdirectories created",
+                "Each feature slice contains handler, request, response classes",
+                "Controllers folder contains TimerSessionsController with thin endpoints",
+                "Services folder contains TimerSessionService",
+                "Models folder contains shared domain entities (TimerSession, Mode enum, State enum)",
+                "Data folder contains DbContext and migrations",
+                "Architecture documentation created explaining the pattern"
+            ],
+            "epicId": "EPIC-05"
+        },
+        {
+            "id": "STORY-05-12",
+            "title": "Implement Database Persistence Layer",
+            "userValue": "As a developer, I want timer sessions persisted to a database so that session data survives application restarts",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Save new session to database",
+                    "given": "a TimerSession object with mode, task, and initial state",
+                    "when": "the service saves it to the database",
+                    "then": "the session is persisted with an auto-generated id and timestamps, and can be queried by id"
+                },
+                {
+                    "scenario": "Retrieve session from database",
+                    "given": "a previously saved session with id=session-123",
+                    "when": "queried by id through the service",
+                    "then": "the complete session object is retrieved with all fields intact"
+                },
+                {
+                    "scenario": "Update existing session in database",
+                    "given": "an existing session in the database",
+                    "when": "state or task is updated through the service",
+                    "then": "the changes are persisted and lastUpdatedAt is updated to current time"
+                }
+            ],
+            "storyPoints": 5,
+            "definitionOfDone": [
+                "Entity Framework DbContext created and configured",
+                "TimerSession DbSet added to DbContext",
+                "Database migration created for TimerSession table schema",
+                "Connection string configured in appsettings.json",
+                "Repository pattern or direct DbContext usage implemented in service",
+                "CRUD operations tested against real database",
+                "Timestamps (createdAt, lastUpdatedAt) auto-set on create/update",
+                "Integration tests with test database or in-memory provider"
+            ],
+            "epicId": "EPIC-05"
+        }
+    ]
+}

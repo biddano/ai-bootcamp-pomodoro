@@ -1,0 +1,470 @@
+{
+    "id": "EPIC-04",
+    "title": "Frontend User Interface",
+    "summary": "Build the React frontend with timer display, controls, mode selector, and task input according to the design specification.",
+    "businessValue": "As a user, I want a clean, minimal interface so that I can focus on my Pomodoro workflow without distraction.",
+    "includedCapabilities": [
+        "App header with Pomodoro branding",
+        "Centered timer card layout",
+        "Large timer display (112px, 700 weight)",
+        "Focus/Break mode selector UI",
+        "Start/Pause button with state toggling",
+        "Reset button",
+        "Session message display",
+        "Key task input section",
+        "Dark mode color scheme implementation",
+        "Cyan accent color theme",
+        "Responsive centered layout"
+    ],
+    "outOfScope": [
+        "User accounts or sign-in",
+        "Settings or preferences",
+        "Timer history or reports",
+        "Notifications or sounds",
+        "Mobile app wrapper"
+    ],
+    "dependencies": [
+        "EPIC-01",
+        "EPIC-02",
+        "EPIC-03",
+        "EPIC-05"
+    ],
+    "suggestedPriority": "High",
+    "estimatedSize": "Large",
+    "stories": [
+        {
+            "storyId": "STORY-04-01",
+            "epicId": "EPIC-04",
+            "title": "Page Layout and Header",
+            "userValue": "As a user, I want a clean header and centered page layout so that the app is visually organized and the timer card is the main focus.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Header displays app branding",
+                    "given": "The app is loaded",
+                    "when": "The page renders",
+                    "then": "The header displays 'Pomodoro' as the app title with 28px, 700 weight font"
+                },
+                {
+                    "scenario": "Content is centered horizontally",
+                    "given": "The app is displayed on different screen sizes",
+                    "when": "The page renders",
+                    "then": "The main content is centered horizontally with a maximum width of 900px"
+                },
+                {
+                    "scenario": "No unnecessary navigation elements",
+                    "given": "The page has loaded",
+                    "when": "User views the header",
+                    "then": "No reports, settings, menu buttons, or sign-in links are visible"
+                },
+                {
+                    "scenario": "Page background uses deep navy color",
+                    "given": "The app is loaded",
+                    "when": "The page renders",
+                    "then": "The app background is #0F172A"
+                }
+            ],
+            "effortEstimate": 3,
+            "definitionOfDone": [
+                "Header component created with 'Pomodoro' title and correct typography",
+                "Page uses 900px max-width centered container",
+                "Dark mode background color (#0F172A) applied to page",
+                "Responsive layout maintains centering on mobile and tablet",
+                "No console errors or warnings",
+                "Code reviewed and merged"
+            ]
+        },
+        {
+            "storyId": "STORY-04-02",
+            "epicId": "EPIC-04",
+            "title": "Timer Card Container and Structure",
+            "userValue": "As a user, I want the timer displayed in a prominent card so that I can easily see the countdown and interact with timer controls.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Timer card is visually distinct",
+                    "given": "The app is loaded",
+                    "when": "The page renders",
+                    "then": "A card component is displayed with background #1E293B, 1px solid #334155 border, and 20px border radius"
+                },
+                {
+                    "scenario": "Timer card is properly padded",
+                    "given": "The timer card is rendered",
+                    "when": "The page displays",
+                    "then": "The card has 40px padding and a width of approximately 720px max, centered on the page"
+                },
+                {
+                    "scenario": "Card contains all timer elements in correct order",
+                    "given": "The timer card is rendered",
+                    "when": "The page displays",
+                    "then": "The card structure includes: mode selector at top, timer display in center, and control buttons below"
+                }
+            ],
+            "effortEstimate": 3,
+            "definitionOfDone": [
+                "TimerCard component created with specified styling",
+                "Background, border, border-radius, and padding match design spec",
+                "Component is responsive and centered",
+                "All child elements are correctly positioned",
+                "No console errors or warnings",
+                "Code reviewed and merged"
+            ]
+        },
+        {
+            "storyId": "STORY-04-03",
+            "epicId": "EPIC-04",
+            "title": "Timer Display",
+            "userValue": "As a user, I want to see a large, clear timer display so that I can easily track how much time remains in my Pomodoro session.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Focus mode timer displays default",
+                    "given": "The app is loaded and Focus mode is selected",
+                    "when": "The page renders",
+                    "then": "The timer display shows '25:00' in 112px, 700 weight font with -2px letter spacing"
+                },
+                {
+                    "scenario": "Break mode timer displays default",
+                    "given": "The app is loaded and Break mode is selected",
+                    "when": "The page renders",
+                    "then": "The timer display shows '05:00' in 112px, 700 weight font"
+                },
+                {
+                    "scenario": "Timer updates in real-time",
+                    "given": "The timer is running and set to 25:00",
+                    "when": "10 seconds pass",
+                    "then": "The timer display updates to show '24:50' and continues counting down"
+                },
+                {
+                    "scenario": "Timer format is MM:SS",
+                    "given": "The timer is running",
+                    "when": "Time passes",
+                    "then": "The display always shows two digits for minutes and two digits for seconds (e.g., 02:15)"
+                },
+                {
+                    "scenario": "Timer text color is correct",
+                    "given": "The timer display is rendered",
+                    "when": "The page renders",
+                    "then": "The timer text color is #F8FAFC (near white)"
+                }
+            ],
+            "effortEstimate": 5,
+            "definitionOfDone": [
+                "TimerDisplay component created with 112px font size and 700 weight",
+                "Default values 25:00 and 05:00 display correctly for respective modes",
+                "MM:SS format is correctly implemented",
+                "Real-time countdown updates correctly",
+                "Text color and letter spacing match design spec",
+                "Timer stops at 00:00 and does not go negative",
+                "Unit tests verify countdown logic",
+                "No console errors or warnings",
+                "Code reviewed and merged"
+            ]
+        },
+        {
+            "storyId": "STORY-04-04",
+            "epicId": "EPIC-04",
+            "title": "Focus and Break Mode Selector",
+            "userValue": "As a user, I want to switch between Focus and Break modes so that I can easily alternate between 25-minute work sessions and 5-minute breaks.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Mode selector shows Focus and Break options",
+                    "given": "The timer card is rendered",
+                    "when": "The page displays",
+                    "then": "Two clickable mode buttons labeled 'Focus' and 'Break' are visible with 18px, 600 weight font"
+                },
+                {
+                    "scenario": "Focus mode is active by default",
+                    "given": "The app is loaded",
+                    "when": "The page renders",
+                    "then": "The Focus button has active styling: background #0891B2, text #F8FAFC, 10px border radius"
+                },
+                {
+                    "scenario": "Active mode styling is applied",
+                    "given": "Focus mode is selected",
+                    "when": "The page renders",
+                    "then": "The Focus button shows active styling and Break button shows inactive styling (transparent background, #CBD5E1 text)"
+                },
+                {
+                    "scenario": "Mode can be switched",
+                    "given": "The app is in Focus mode",
+                    "when": "User clicks the Break button",
+                    "then": "Break mode becomes active and timer resets to 05:00"
+                },
+                {
+                    "scenario": "Inactive mode has hover state",
+                    "given": "An inactive mode button is displayed",
+                    "when": "User hovers over it",
+                    "then": "The button background changes to #334155 and text becomes #F8FAFC"
+                }
+            ],
+            "effortEstimate": 5,
+            "definitionOfDone": [
+                "ModeSelector component created with Focus and Break buttons",
+                "Active mode styling correctly applied (background #0891B2)",
+                "Inactive mode styling correctly applied (transparent, #CBD5E1 text)",
+                "Hover states work as specified",
+                "Clicking a mode updates the active mode state",
+                "Mode switching resets the timer to appropriate duration",
+                "Running timer stops when mode is switched",
+                "Unit tests verify mode switching behavior",
+                "No console errors or warnings",
+                "Code reviewed and merged"
+            ]
+        },
+        {
+            "storyId": "STORY-04-05",
+            "epicId": "EPIC-04",
+            "title": "Timer Control Buttons - Start/Pause and Reset",
+            "userValue": "As a user, I want Start, Pause, and Reset buttons so that I can control the timer independently.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Start button displays initially",
+                    "given": "The timer is not running",
+                    "when": "The page renders",
+                    "then": "A button labeled 'START' is displayed with background #22D3EE, 24px 700 weight font, 12px border radius, approximately 320px width and 72px height"
+                },
+                {
+                    "scenario": "Start button changes to Pause on timer start",
+                    "given": "The timer is not running and Start button is visible",
+                    "when": "User clicks the Start button",
+                    "then": "The button label changes to 'PAUSE' and timer begins counting down"
+                },
+                {
+                    "scenario": "Pause button changes to Start on pause",
+                    "given": "The timer is running with Pause button visible",
+                    "when": "User clicks the Pause button",
+                    "then": "The button label changes to 'START' and timer stops at current remaining time"
+                },
+                {
+                    "scenario": "Reset button is always visible",
+                    "given": "The timer card is rendered",
+                    "when": "The page displays",
+                    "then": "A secondary Reset button is visible below or beside the Start/Pause button"
+                },
+                {
+                    "scenario": "Reset button styling is correct",
+                    "given": "The Reset button is visible",
+                    "when": "The page renders",
+                    "then": "The button has transparent background, 1px solid #475569 border, #CBD5E1 text, and 12px border radius"
+                },
+                {
+                    "scenario": "Reset button returns timer to default",
+                    "given": "The timer is at any state and showing a different time than default",
+                    "when": "User clicks the Reset button",
+                    "then": "Timer stops and returns to the selected mode's default duration (25:00 or 05:00)"
+                },
+                {
+                    "scenario": "Reset button hover state is correct",
+                    "given": "The Reset button is visible",
+                    "when": "User hovers over it",
+                    "then": "Background changes to #334155 and text becomes #F8FAFC"
+                },
+                {
+                    "scenario": "Start button hover state is correct",
+                    "given": "The Start/Pause button is visible",
+                    "when": "User hovers over it",
+                    "then": "Background changes to #67E8F9"
+                }
+            ],
+            "effortEstimate": 8,
+            "definitionOfDone": [
+                "TimerControls component created with Start/Pause and Reset buttons",
+                "Start button styling matches spec (#22D3EE background, 24px, 700 weight, 320px x 72px)",
+                "Pause button styling matches Start button styling",
+                "Reset button styling matches spec (transparent, #475569 border, #CBD5E1 text)",
+                "Button state toggling (Start ↔ Pause) works correctly",
+                "Reset button resets timer to default duration for current mode",
+                "Hover states work for both buttons",
+                "Buttons are disabled when appropriate (e.g., during specific transitions if needed)",
+                "Unit tests verify button state transitions and timer control logic",
+                "No console errors or warnings",
+                "Code reviewed and merged"
+            ]
+        },
+        {
+            "storyId": "STORY-04-06",
+            "epicId": "EPIC-04",
+            "title": "Session Message Display",
+            "userValue": "As a user, I want to see contextual messages so that I'm reminded of the current mode's purpose.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Focus mode message displays",
+                    "given": "Focus mode is active",
+                    "when": "The page renders",
+                    "then": "The message 'Time to focus.' appears below the timer with 20px font, #CBD5E1 text color, center aligned"
+                },
+                {
+                    "scenario": "Break mode message displays",
+                    "given": "Break mode is active",
+                    "when": "The page renders",
+                    "then": "The message 'Take a short break.' appears below the timer with 20px font, #CBD5E1 text color, center aligned"
+                },
+                {
+                    "scenario": "Message updates on mode switch",
+                    "given": "The app is in Focus mode showing 'Time to focus.'",
+                    "when": "User switches to Break mode",
+                    "then": "The message immediately changes to 'Take a short break.'"
+                }
+            ],
+            "effortEstimate": 3,
+            "definitionOfDone": [
+                "SessionMessage component created with correct text for each mode",
+                "Focus mode displays 'Time to focus.'",
+                "Break mode displays 'Take a short break.'",
+                "Text styling matches spec (20px, #CBD5E1, center aligned)",
+                "Message updates when mode changes",
+                "Message is positioned below timer card",
+                "No console errors or warnings",
+                "Code reviewed and merged"
+            ]
+        },
+        {
+            "storyId": "STORY-04-07",
+            "epicId": "EPIC-04",
+            "title": "Task Input Section",
+            "userValue": "As a user, I want to enter my key task so that I can stay focused on my main objective during the Pomodoro session.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Task input section is visible",
+                    "given": "The app is loaded",
+                    "when": "The page renders",
+                    "then": "Below the timer area, a section labeled 'Key Task' is displayed with 24px, 700 weight font in #F8FAFC"
+                },
+                {
+                    "scenario": "Task input field is present",
+                    "given": "The task section is visible",
+                    "when": "The page renders",
+                    "then": "An input field with placeholder 'What are you focusing on?' is displayed with 18px font"
+                },
+                {
+                    "scenario": "Task input styling is correct",
+                    "given": "The task input field is visible",
+                    "when": "The page renders",
+                    "then": "The input has background #1E293B, border 1px solid #475569, text #F8FAFC, placeholder #94A3B8, and 12px border radius"
+                },
+                {
+                    "scenario": "Task can be entered before timer starts",
+                    "given": "The task input field is visible and timer is not running",
+                    "when": "User types a task in the input field",
+                    "then": "The task text is displayed in the input and can be edited"
+                },
+                {
+                    "scenario": "Task persists during timer session",
+                    "given": "A task is entered and timer is started",
+                    "when": "The timer is running",
+                    "then": "The task remains visible and readable in the input field"
+                },
+                {
+                    "scenario": "Task can be cleared",
+                    "given": "A task is entered",
+                    "when": "User clears the input field",
+                    "then": "The task is removed and the placeholder text is visible again"
+                },
+                {
+                    "scenario": "Input focus state is correct",
+                    "given": "The task input field is visible",
+                    "when": "User focuses on the input",
+                    "then": "The input border changes to #22D3EE (cyan accent)"
+                }
+            ],
+            "effortEstimate": 5,
+            "definitionOfDone": [
+                "TaskInput component created with section heading 'Key Task'",
+                "Input field has correct placeholder text",
+                "Input styling matches spec (background #1E293B, border #475569, text #F8FAFC)",
+                "Focus state applies cyan border (#22D3EE)",
+                "Task text can be entered, edited, and cleared",
+                "Task persists when timer is running",
+                "Task input is accessible and works on keyboard and mouse",
+                "No console errors or warnings",
+                "Code reviewed and merged"
+            ]
+        },
+        {
+            "storyId": "STORY-04-08",
+            "epicId": "EPIC-04",
+            "title": "Dark Mode Color Scheme and Theme",
+            "userValue": "As a user, I want a calm, dark theme so that the app is easy on my eyes during focused work sessions.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "All colors match design spec",
+                    "given": "The app is loaded",
+                    "when": "The page renders",
+                    "then": "All UI elements use colors from the specified palette: backgrounds, text, borders, accents, and hover states"
+                },
+                {
+                    "scenario": "High contrast is maintained",
+                    "given": "The app is fully rendered",
+                    "when": "User reviews the page",
+                    "then": "All text is readable with sufficient contrast against backgrounds (WCAG AA standards)"
+                },
+                {
+                    "scenario": "Cyan accent color is used for interactive elements",
+                    "given": "Interactive elements are visible",
+                    "when": "The page renders",
+                    "then": "Primary buttons and focus states use cyan (#22D3EE), hover uses bright cyan (#67E8F9), and active uses deep cyan (#0891B2)"
+                },
+                {
+                    "scenario": "Font stack is applied",
+                    "given": "The app is loaded",
+                    "when": "The page renders",
+                    "then": "Text uses the font stack: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+                }
+            ],
+            "effortEstimate": 5,
+            "definitionOfDone": [
+                "Global CSS color variables or theme system is set up with all specified colors",
+                "All components use theme colors consistently",
+                "Font stack is applied to all text elements",
+                "Contrast ratios meet WCAG AA standards for all text/background combinations",
+                "Dark mode colors are applied throughout the app",
+                "No hardcoded color values in components (uses theme variables)",
+                "Visual regression testing confirms colors match design spec",
+                "No console errors or warnings",
+                "Code reviewed and merged"
+            ]
+        },
+        {
+            "storyId": "STORY-04-09",
+            "epicId": "EPIC-04",
+            "title": "Responsive Layout",
+            "userValue": "As a user, I want the app to work well on different screen sizes so that I can use the Pomodoro timer on any device.",
+            "acceptanceCriteria": [
+                {
+                    "scenario": "Layout is centered on all screen sizes",
+                    "given": "The app is viewed on desktop, tablet, and mobile",
+                    "when": "The page renders",
+                    "then": "Content is centered with maximum 900px width and maintains alignment on all screen sizes"
+                },
+                {
+                    "scenario": "Timer card is readable on mobile",
+                    "given": "The app is viewed on a mobile device (375px viewport)",
+                    "when": "The page renders",
+                    "then": "The timer card remains readable with appropriate padding and font sizes are scaled proportionally"
+                },
+                {
+                    "scenario": "Buttons are touch-friendly",
+                    "given": "The app is viewed on a mobile device",
+                    "when": "User views the control buttons",
+                    "then": "Buttons are large enough to tap comfortably (minimum 44px height for touch targets)"
+                },
+                {
+                    "scenario": "No horizontal scrolling required",
+                    "given": "The app is viewed on any screen size",
+                    "when": "The page renders",
+                    "then": "Content fits within the viewport without requiring horizontal scrolling"
+                }
+            ],
+            "effortEstimate": 5,
+            "definitionOfDone": [
+                "Responsive design is implemented with media queries and flexible layouts",
+                "Max-width of 900px is maintained and honored",
+                "Content remains centered on all screen sizes",
+                "Touch targets are minimum 44px height on mobile",
+                "Font sizes are readable on mobile without zoom",
+                "No horizontal scrolling on any viewport width from 320px to 2560px",
+                "Tested on mobile (iPhone), tablet (iPad), and desktop viewports",
+                "No console errors or warnings",
+                "Code reviewed and merged"
+            ]
+        }
+    ]
+}
