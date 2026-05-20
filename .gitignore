@@ -2,11 +2,11 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs/PomodoroApp.slnx/FileContentIndex
-/.vs/PomodoroApp.slnx/v18
-/backend/Pomodoro.Api/obj
-/Pomodoro.Api/bin
+/.vs
 
-/Pomodoro.Application/obj
-/Pomodoro.Data/obj
-/Pomodoro.Domain/obj
+/backend/Pomodoro.Api/obj
+/backend/Pomodoro.Api/bin
+
+/backend/Pomodoro.Application/obj
+/backend/Pomodoro.Data/obj
+/backend/Pomodoro.Domain/obj
