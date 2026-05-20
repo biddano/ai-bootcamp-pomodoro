@@ -1,11 +1,11 @@
 <Solution>
   <Folder Name="/Core/">
-    <Project Path="Pomodoro.Application/Pomodoro.Application.csproj" Id="a5579ed0-7545-4d00-8e94-c80060653ee3" />
-    <Project Path="Pomodoro.Domain/Pomodoro.Domain.csproj" Id="228bf4f2-26be-4b08-9a19-e6418218b438" />
+    <Project Path="backend/Pomodoro.Application/Pomodoro.Application.csproj" Id="a5579ed0-7545-4d00-8e94-c80060653ee3" />
+    <Project Path="backend/Pomodoro.Domain/Pomodoro.Domain.csproj" Id="228bf4f2-26be-4b08-9a19-e6418218b438" />
   </Folder>
   <Folder Name="/External/">
     <Project Path="backend/Pomodoro.Api/Pomodoro.Api.csproj" />
-    <Project Path="Pomodoro.Data/Pomodoro.Data.csproj" Id="f1c21934-27a6-4ebb-9b8a-9aaadb69857d" />
+    <Project Path="backend/Pomodoro.Data/Pomodoro.Data.csproj" Id="f1c21934-27a6-4ebb-9b8a-9aaadb69857d" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />
