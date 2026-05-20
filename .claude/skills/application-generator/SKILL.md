@@ -16,43 +16,44 @@ You are the master orchestrator of full-stack application generation tasks. Your
 
 ---
 
-## Phase 1: Execution Pipeline (Sub-Skill Invocation Sequence)
+## Phase 1: Feature Implementation (Sub-Skill Invocation Sequence)
 
-You must call the following domain-specific custom skills sequentially for each domain model or feature vertical requested by the user. Do not advance to a subsequent skill if the current skill reports an error or compiler block.
+You must call the following skills sequentially for each feature vertical or user story. Parse the story or plan to derive domain object names, properties, and component fields before invoking each skill. Do not advance to a subsequent step if the current skill reports an error or compiler block.
 
-### Step 1: Database Tier Generation (`db-migrator-skill`)
-* **Objective:** Establish the data persistence model.
-* **Action:** Pass entity constraints, database type, and repository configurations to `db-migrator-skill`.
-* **Verification:** Ensure database connection contexts, Entity Framework core contexts, or raw schemas are generated and compile cleanly.
+### Step 1: Backend Domain Object (`create-domain-object`)
+* **Objective:** Generate the strongly-typed domain entity for the feature.
+* **Action:** Invoke `create-domain-object`. Pass the domain object name and comma-separated property list parsed from the story or plan.
+* **Verification:** Ensure the file lands in `./backend/Domain/`, has a private constructor, exposes a static `.Create()` factory method, and uses file-scoped namespaces.
 
-### Step 2: Backend Domain Object Generation (`create-domain-object`)
-* **Objective:** Generate strongly-typed domain layer entities following strict DDD patterns.
-* **Action:** Invoke `create-domain-object`. Pass the domain object name and the comma-separated list of properties parsed from the user story.
-* **Verification:** Ensure the file lands in `./backend/Domain/`, contains the private constructor, features the static `.Create()` initialization factory method, and uses file-scoped namespaces.
+### Step 2: Backend API Layer (`dotnet-api-patterns`)
+* **Objective:** Scaffold the WebAPI feature slice mapping to the domain object from Step 1.
+* **Action:** Invoke `dotnet-api-patterns` to generate the vertical slice — request/response models, handler, validator, and endpoint registration — following the project's architecture standards.
+* **Verification:** Ensure the slice compiles cleanly via `solution-build` before proceeding.
 
-### Step 3: Backend Core API Generation (`backend-builder-skill`)
-* **Objective:** Scaffold the .NET 10 WebAPI infrastructure layers mapping to the newly created domain object.
-* **Action:** Invoke `backend-builder-skill` to implement application logic, WebAPI routing endpoints, MediatR command handling, and validation filters.
-* **Enforced Standards:** Link the backend endpoint handlers directly to the domain objects generated in Step 2 and the database contexts from Step 1.
+### Step 3: Backend Unit Tests
+* **Objective:** Write xUnit unit tests covering the domain object and API handler created in Steps 1–2.
+* **Action:** Create test classes in `./backend` test project. Cover the `.Create()` factory method, validation rules, and key handler behaviors derived directly from the acceptance criteria in the story or plan.
+* **Verification:** All new tests must compile. Do not run them yet — that happens in Phase 2.
 
-### Step 4: Frontend Component Generation (`create-frontend-component`)
-* **Objective:** Scaffold the type-safe React view component corresponding to the new domain object features.
-* **Action:** Invoke `create-frontend-component`. Pass the component name (e.g., matching or representing the domain model) along with its fields to generate its properties interface structure.
-* **Verification:** Ensure the component lands in `./frontend/src/components/`, utilizes standard functional definitions, incorporates clean TypeScript interfaces, and contains inline Tailwind classes for presentation.
+### Step 4: Frontend Component (`create-frontend-component`)
+* **Objective:** Scaffold the React presentation component for the feature.
+* **Action:** Invoke `create-frontend-component`. Pass the component name and fields matching the domain model to generate TypeScript interfaces and Tailwind-styled JSX.
+* **Verification:** Ensure the component lands in `./frontend/src/components/` and compiles cleanly.
 
-### Step 5: Frontend Layout Integration (`frontend-builder-skill`)
-* **Objective:** Connect the newly created presentation components to active data streams.
-* **Action:** Invoke `frontend-builder-skill` to create complete client view pages, state management hooks, and asynchronous client communication mechanisms targeting the specific backend API endpoints established in Step 3.
+### Step 5: Frontend Integration
+* **Objective:** Connect the new component to live data from the backend API.
+* **Action:** Create the necessary state management hooks and async API client calls targeting the endpoints established in Step 2. Wire the component into the relevant page or layout.
+* **Verification:** Confirm `npm run build` succeeds with no TypeScript errors before proceeding.
 
 ---
 
-## Phase 2: Integration, Verification & Loop Constraints
+## Phase 2: Test & Commit
 
-Once all specialized sub-skills complete their generation passes for the given feature set, run an integration loop mirroring our strict QA whiteboard cycle:
+Once all Phase 1 implementation steps are complete, execute the following in strict order:
 
-1. **Local Build Verification:** Execute a complete workspace compilation via `dotnet build` at the solution level, followed by checking frontend compilation status via `npm run build`. Fix any nullability warnings, TypeScript compiler exceptions, or syntax errors immediately.
-2. **Implementation Review:** Verify that the generated code contains proper validation rules on both the C# API layers and the React client-side hooks, mapping flawlessly to the incoming requirements.
-3. **Task Completion Report:** Provide the user with a definitive map of the generated files (Domain models, API endpoints, and React components), dependencies injected, and compilation status.
+1. **Run Tests:** Invoke `unit-tester` to execute the full .NET xUnit test suite. If any tests fail, fix the failures and re-run until the suite is fully green. Do not proceed to the commit step until all tests pass.
+2. **Commit:** Invoke `commit-code` to commit all verified changes with an auto-generated message describing the feature. The commit must only be created after a green test run.
+3. **Task Completion Report:** Provide the user with a summary of generated files (domain objects, API slices, test classes, React components), skills invoked, and final compilation and test status.
 
 ## Error Recovery Protocols
 If any sub-skill execution fails due to a missing framework layer, dependency mismatch, or compiler error, explicitly halt the entire pipeline execution chain. Inform the user of the exact code block or file boundary that threw the exception before proceeding with automated corrections.
