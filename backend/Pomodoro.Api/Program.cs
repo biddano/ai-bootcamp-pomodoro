@@ -1,4 +1,5 @@
 using Pomodoro.Api.Features.TimerSessions.GetTimerSessionHome;
+using Pomodoro.Api.Features.TimerSessions.CreateTimerSession;
 using Pomodoro.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<ITimerSessionService, TimerSessionService>();
 builder.Services.AddScoped<GetTimerSessionHomeHandler>();
+builder.Services.AddScoped<CreateTimerSessionHandler>();
+builder.Services.AddScoped<CreateTimerSessionValidator>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

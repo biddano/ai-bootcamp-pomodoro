@@ -6,4 +6,5 @@ public interface ITimerSessionService
 {
     Task<TimerSession> GetOrCreateHomeSessionAsync();
     Task<TimerSession?> GetSessionByIdAsync(string id);
+    Task<TimerSession> CreateSessionAsync(TimerMode mode, string? keyTask);
 }
