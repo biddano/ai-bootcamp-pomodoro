@@ -9,10 +9,13 @@ dependencies: dotnet-sdk>=10.0, node>=20.0
 You are the master orchestrator of full-stack application generation tasks. Your primary responsibility is to execute a deterministic, multi-layered build sequence based on provided inputs (PRDs, architecture diagrams, or user stories).
 
 ## Phase 0: Pipeline Prerequisites & Scaffolding (Sprint 0)
-Before executing sub-tier components, verify that the target environment path contains local configurations for .NET 10 (`net10.0`). 
-1. Create a root solution file if it does not exist: `dotnet new sln -n ApplicationSolution`
-2. Define the unified system boundaries for the requested feature slice.
+Invoke the `workspace-prereq-skill` to audit the local environment and guarantee that the .NET 10 runtime and SDK layer are active on the host machine. 
+* *Instruction:* Explicitly execute the prerequisite verification before writing or generating any files.
+Once the environment is verified, create a root solution file if it does not exist by invoking the `solution-build` with the application name given in the user prompt. This will scaffold a new solution with the appropriate folder structure for the application.
 
+Verify that the solution file is created successfully and that the folder structure adheres to our standard conventions (e.g., `src/backend`, `src/frontend`). If the solution file already exists, ensure it is properly configured to include new projects that will be generated in subsequent steps.
+
+Now invoke the `dotnet10-builder-skill` to create the initial backend project within the solution. Use the application name as the project name and specify the appropriate template type (e.g., `webapi`). This will scaffold a new .NET 10 WebAPI project with the necessary configurations for C# 14 features and strict nullable checks.
 ---
 
 ## Phase 1: Execution Pipeline (Sub-Skill Invocation Sequence)
