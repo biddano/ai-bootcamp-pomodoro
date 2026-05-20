@@ -8,7 +8,8 @@ dependencies: dotnet-sdk >= 10.0
 
 ## Core Actions
 
-### 0. Check dotnet-sdk
+### 0. Build the solution
+
 When asked to create a new application or module:
 * Check if the dotnet-sk is installed.
 * If no dotnet-sdk. Install the latest version.
