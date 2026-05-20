@@ -22,6 +22,13 @@ Initial backend responsibilities:
 * Keep business logic outside of controllers
 * Return consistent API responses
 
+## Database for state management
+The backend will use SqlLite for storage/state management. 
+Initial database resopnsibilities:
+* Create a db schema
+* Initialize the db tables
+* Create the DTO objects based on the db tables in the backend code base.
+
 ## Backend Architecture Style
 
 The backend will follow a minimal vertical slice architecture.
