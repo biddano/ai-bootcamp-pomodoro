@@ -1,10 +1,10 @@
 ---
 name: commit-code
 description: For committing code to the local branch.
-  Create a git commit with auto-generated message describing the changes.
+  Create a git commit with auto-generated message describing the changes only after the tests pass.
 ---
 
-Creates a commit on the current branch with a brief description of the changes.
+Creates a commit on the current branch with a brief description of the changes only after the tests pass.
 
 **Validation checks:**
 - Verifies current branch is NOT main (stops with warning if it is)
@@ -18,5 +18,4 @@ Creates a commit on the current branch with a brief description of the changes.
 
 **After commit:**
 - Informs you the commit was created successfully
-- Reminds you that you must manually push to origin with `git push`
-- Does NOT automatically push
+- Use `git push` to push the commit to the remote repository when ready

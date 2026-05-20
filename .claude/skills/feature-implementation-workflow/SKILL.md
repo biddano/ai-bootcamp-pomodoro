@@ -10,16 +10,15 @@ description: Use this skill when implementing a new feature, modifying an existi
 Reference this requirements document: `requirements-doc.md`
 
 Use when: 
-- Adding a new Pomodoro feature
-- Updating existing timer behavior
+- Adding a new feature
+- Updating existing behavior
 - Creating or modifying API endpoints
 - Connecting frontend components to backend data
 - Refactoring feature-related code
 - Fixing bugs that affect user-facing behavior
 
 Before making code changes:
-
-1. Understand the requested behavior.
+1. Understand the requested behavior. Pause to clarify any uncertainties with the requester or stakeholders.
 2. Identify whether the change affects:
    - Frontend only
    - Backend only

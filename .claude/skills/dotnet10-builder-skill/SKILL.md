@@ -1,7 +1,7 @@
 ---
 name: dotnet10-builder-skill
 description: Automates the creation, configuration, and compilation of C# applications targeting .NET 10 (net10.0). Use when initializing new apps, managing dependency packages, or executing builds.
-dependencies: dotnet-sdk>=10.0
+dependencies: dotnet-sdk >= 10.0
 ---
 
 # .NET 10 Application Builder Specification
