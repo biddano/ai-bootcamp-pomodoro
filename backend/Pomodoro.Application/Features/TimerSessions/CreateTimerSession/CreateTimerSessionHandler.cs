@@ -1,20 +1,19 @@
-namespace Pomodoro.Api.Features.TimerSessions.CreateTimerSession;
+namespace Pomodoro.Application.Features.TimerSessions.CreateTimerSession;
 
-using Pomodoro.Api.Models;
-using Pomodoro.Api.Services;
+using Pomodoro.Application.Services;
 
 public class CreateTimerSessionHandler
 {
-    private readonly ITimerSessionService _timerSessionService;
+    private readonly ITimerSessionApplicationService _applicationService;
 
-    public CreateTimerSessionHandler(ITimerSessionService timerSessionService)
+    public CreateTimerSessionHandler(ITimerSessionApplicationService applicationService)
     {
-        _timerSessionService = timerSessionService;
+        _applicationService = applicationService;
     }
 
     public async Task<CreateTimerSessionResponse> Handle(CreateTimerSessionRequest request)
     {
-        var session = await _timerSessionService.CreateSessionAsync(request.Mode, request.KeyTask);
+        var session = await _applicationService.CreateSessionAsync(request.Mode, request.KeyTask);
 
         return new CreateTimerSessionResponse
         {

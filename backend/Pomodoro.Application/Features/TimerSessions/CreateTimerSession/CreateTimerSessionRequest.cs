@@ -1,6 +1,6 @@
-namespace Pomodoro.Api.Features.TimerSessions.CreateTimerSession;
+namespace Pomodoro.Application.Features.TimerSessions.CreateTimerSession;
 
-using Pomodoro.Api.Models;
+using Pomodoro.Domain.Entities;
 
 public class CreateTimerSessionRequest
 {

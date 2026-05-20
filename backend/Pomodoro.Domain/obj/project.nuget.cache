@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CGNDGXPzbC0=",
+  "dgSpecHash": "lp8FTCbTh6E=",
   "success": true,
-  "projectFilePath": "C:\\repos\\PomoTimerGroup\\ai-bootcamp-pomodoro\\backend\\Pomodoro.Domain\\Pomodoro.Domain.csproj",
+  "projectFilePath": "/Users/nick.nalli/Develop/ai-bootcamp-pomodoro/backend/Pomodoro.Domain/Pomodoro.Domain.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

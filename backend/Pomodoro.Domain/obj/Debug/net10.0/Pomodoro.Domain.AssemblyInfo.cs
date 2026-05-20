@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Pomodoro.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1b0fe750c17fa33db316261bd51dbf0c16a4d865")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e319fb849497883961cb52b3b01bcd46faa5036a")]
 [assembly: System.Reflection.AssemblyProductAttribute("Pomodoro.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Pomodoro.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

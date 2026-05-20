@@ -2,7 +2,7 @@ namespace Pomodoro.Api.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
 using Pomodoro.Api.Features.TimerSessions.GetTimerSessionHome;
-using Pomodoro.Api.Features.TimerSessions.CreateTimerSession;
+using Pomodoro.Application.Features.TimerSessions.CreateTimerSession;
 
 [ApiController]
 [Route("api/[controller]")]

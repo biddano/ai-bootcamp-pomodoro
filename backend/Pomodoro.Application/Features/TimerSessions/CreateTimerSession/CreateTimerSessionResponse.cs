@@ -1,4 +1,4 @@
-namespace Pomodoro.Api.Features.TimerSessions.CreateTimerSession;
+namespace Pomodoro.Application.Features.TimerSessions.CreateTimerSession;
 
 public class CreateTimerSessionResponse
 {

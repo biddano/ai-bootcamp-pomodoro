@@ -1,18 +1,4 @@
-namespace Pomodoro.Api.Models;
-
-public enum TimerMode
-{
-    Focus,
-    Break
-}
-
-public enum TimerStatus
-{
-    Idle,
-    Running,
-    Paused,
-    Completed
-}
+namespace Pomodoro.Domain.Entities;
 
 public class TimerSession
 {
