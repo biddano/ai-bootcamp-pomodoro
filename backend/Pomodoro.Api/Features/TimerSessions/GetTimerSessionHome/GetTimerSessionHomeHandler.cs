@@ -1,20 +1,19 @@
 namespace Pomodoro.Api.Features.TimerSessions.GetTimerSessionHome;
 
-using Pomodoro.Api.Models;
-using Pomodoro.Api.Services;
+using Pomodoro.Application.Services;
 
 public class GetTimerSessionHomeHandler
 {
-    private readonly ITimerSessionService _timerSessionService;
+    private readonly ITimerSessionApplicationService _applicationService;
 
-    public GetTimerSessionHomeHandler(ITimerSessionService timerSessionService)
+    public GetTimerSessionHomeHandler(ITimerSessionApplicationService applicationService)
     {
-        _timerSessionService = timerSessionService;
+        _applicationService = applicationService;
     }
 
     public async Task<GetTimerSessionHomeResponse> Handle(GetTimerSessionHomeRequest request)
     {
-        var session = await _timerSessionService.GetOrCreateHomeSessionAsync();
+        var session = await _applicationService.GetOrCreateHomeSessionAsync();
 
         return new GetTimerSessionHomeResponse
         {
